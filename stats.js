@@ -203,13 +203,21 @@ config.configFile(process.argv[2], function (config) {
     // key counting
     var keyFlushInterval = Number((config.keyFlush && config.keyFlush.interval) || 0);
 
+    var auth = "auth" in config ? config.auth : false;
+
     var handlePacket = function (msg, rinfo) {
       backendEvents.emit('packet', msg, rinfo);
       counters[packets_received]++;
       var packet_data = msg.toString();
       if (packet_data.indexOf("\n") > -1) {
         var metrics = packet_data.split("\n");
+        if (auth && metrics.shift() !== auth) {
+          return
+        }
       } else {
+        if(auth) {
+          return;
+        }
         var metrics = [ packet_data ] ;
       }
 

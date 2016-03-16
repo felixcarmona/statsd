@@ -117,4 +117,5 @@ Optional Variables:
 , graphiteHost: "graphite.example.com"
 , port: 8125
 , backends: [ "./backends/graphite" ]
+, auth: '1234'
 }
